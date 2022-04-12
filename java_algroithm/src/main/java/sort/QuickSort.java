@@ -1,11 +1,40 @@
 package sort;
 
+import com.sun.org.apache.bcel.internal.generic.SWAP;
+
 public class QuickSort {
     public static void quickSort(int[] arr){
         if (arr==null||arr.length<2){
             return;
         }
-        quickSort(arr,0,arr.length-1);
+//        quickSort(arr,0,arr.length-1);
+        quickSort2(arr,0,arr.length-1);
+    }
+
+    private static void quickSort2(int[] arr, int l, int r) {
+        if (l<r){
+            swap(arr, l+(int)(Math.random()*(r-l+1)), r);
+            int[] p = partition(arr,l,r);
+            quickSort2(arr, l, p[0]-1);
+            quickSort2(arr, p[1]+1,r);
+        }
+
+    }
+
+    private static int[] partition(int[] arr, int l, int r) {
+        int less = l-1;
+        int more = r;
+        while (l<more){
+            if (arr[l]<arr[r]){
+                swap(arr, ++less, l++);
+            }else if (arr[l]>arr[r]){
+                swap(arr, --more, l);
+            }else {
+                l++;
+            }
+        }
+        swap(arr, more, r);
+        return new int[] {less+1,more};
     }
 
     private static void quickSort(int[] arr, int l, int r) {
@@ -37,5 +66,10 @@ public class QuickSort {
         }
         arr[l]=a;
         return l;
+    }
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i]=arr[j];
+        arr[j]=temp;
     }
 }
